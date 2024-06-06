@@ -72,6 +72,7 @@ function RecipeBook({ children, setRecipes }: RecipeBookProps) {
             required
           />
         </label>
+        <LineItem/>
         <button
           type="submit"
           className="border border-blue-700 px-1 mt-4 rounded w-full bg-blue-300"
@@ -97,4 +98,57 @@ function RecipeCard({ name, ingredients }: RecipeCardProps) {
       <div className="p-2">{ingredients}</div>
     </li>
   );
+}
+
+type Ingredient = {
+  name: string;
+  amount: string;
+  unit?: string;
+}
+
+type LineItemProps = {
+  //ingredient: Ingredient;
+  setIngredients?: React.Dispatch<React.SetStateAction<Ingredient[]>>
+
+}
+
+function LineItem({ setIngredients }:LineItemProps){
+  //console.log(ingredient);
+return (
+<div className="flex flex-col gap-8 w-64">
+      <form className="flex flex-row gap-2" >
+        <label>
+          Ingredient
+          <input
+            name="ingredientName"
+            className="block border border-gray-500 px-1 rounded w-full bg-gray-100"
+            required
+          />
+        </label>
+        <label>
+          Amount
+          <input
+            name="ingredientAmount"
+            className="block border border-gray-500 px-1 rounded w-full bg-gray-100"
+            required
+          />
+        </label>
+        <label>
+          Unit
+          <input
+            name="ingredientUnit"
+            className="block border border-gray-500 px-1 rounded w-full bg-gray-100"
+            
+          />
+        </label>
+        <button
+          type="submit"
+          className="border border-blue-700 px-1 mt-4 rounded w-full bg-blue-300"
+        >
+          Add
+        </button>
+      </form>
+      <hr className="border-gray-500" />
+    </div>)
+  
 }

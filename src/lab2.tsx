@@ -5,42 +5,73 @@
  * 4. Leverage built-in form validation to ensure that a recipe name and ingredients are provided by adding the `required` prop to the input and textarea elements.
  */
 
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 type Recipe = {
   name: string;
   ingredients: string;
 };
 
+
 export function App() {
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  
+  const handleSubmit =  (event: React.SyntheticEvent<HTMLFormElement>) => {
+      event.preventDefault()
+      const form = event.currentTarget
+      const formElements = form.elements as typeof form.elements & {
+        nameInput: {value: string}
+        ingredientsInput: {value: string}
+      }
+
+      let newRecipe = {name: formElements.nameInput.value, ingredients: formElements.ingredientsInput.value};
+
+      setRecipes(prevRecipes => [...prevRecipes, newRecipe]);
+
+      form.reset();
+
+      console.log(formElements.nameInput.value);
+    }
+  
+  
+
   return (
     <div className="flex flex-col gap-4 items-center">
       <h1 className="text-2xl">Recipes</h1>
-      <RecipeBook></RecipeBook>
+      <RecipeBook handleSubmit={handleSubmit}>
+        {recipes.map((recipe)=>
+          <RecipeCard key={recipe.name} name={recipe.name} ingredients= {recipe.ingredients}/>
+        )}
+      </RecipeBook>
     </div>
   );
 }
 
 type RecipeBookProps = {
   children?: ReactNode;
+  handleSubmit: (event: React.SyntheticEvent<HTMLFormElement>) => void
 };
 
-function RecipeBook({ children }: RecipeBookProps) {
+function RecipeBook({ children, handleSubmit }: RecipeBookProps) {
   return (
     <div className="flex flex-col gap-8 w-64">
-      <form className="flex flex-col gap-2">
+      <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <label>
           Name
           <input
+            required
             name="name"
             className="block border border-gray-500 px-1 rounded w-full bg-gray-100"
+            id="nameInput"
           />
         </label>
         <label>
           Ingredients
           <textarea
+            required
             name="ingredients"
             className="block border border-gray-500 px-1 rounded w-full bg-gray-100"
+            id="ingredientsInput"
           />
         </label>
         <button

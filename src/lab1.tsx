@@ -5,17 +5,23 @@
  * 4. Add types for component props.
  */
 
+type TitleProps = {
+  children: string;
+}
+
 export function App() {
   return (
-    <Title>Lab 1</Title>
-    <Greeting name="Zack" />
+    <>
+      <Title>Lab 1</Title>
+      <Greeting name="Zack" />
+    </>
   );
 }
 
-function Title() {
-  return <h1 className="text-2xl"></h1>;
+function Title({children}:TitleProps) {
+  return <h1 className="text-2xl">{children}</h1>;
 }
 
-function Greeting(name: any) {
+function Greeting({name}: any) {
   return <div>Hey {name}, welcome to CoStar!</div>;
 }
